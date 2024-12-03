@@ -24,7 +24,7 @@ app.post("/run", (req, res) => {
 
   // Use Docker to compile and run the code
   exec(
-    `docker run --rm -v "C:/Users/karan/Desktop/New folder/codeEditor:/app" c-compiler`, 
+     `docker run --rm -v "$(pwd):/app" c-compiler`, 
     (error, stdout, stderr) => {
       if (error || stderr) {
         console.log(error)
