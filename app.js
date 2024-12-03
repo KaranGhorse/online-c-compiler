@@ -17,23 +17,21 @@ app.get("/run", (req, res) => {
 
 app.post("/run", (req, res) => {
   const code = req.body.code;
-  // console.log('/run',code)
-  // Write user code to a file in the current directory
-  const filePath = path.join(__dirname, 'code.c'); 
+
+  // Save the C code to a file
+  const filePath = path.join(__dirname, "code.c");
   fs.writeFileSync(filePath, code);
 
-  // Use Docker to compile and run the code
-  exec(
-     `docker run --rm -v "$(pwd):/app" c-compiler`, 
-    (error, stdout, stderr) => {
-      if (error || stderr) {
-        console.log(error)
-        return res.json({ error: stderr || error.message });
-      }
-      console.log(stdout)
-      res.json({ output: stdout });
+  // Compile and run the C code using gcc
+  exec(`gcc code.c -o code && ./code`, (error, stdout, stderr) => {
+    if (error || stderr) {
+      console.error("Compilation/Execution Error:", error || stderr);
+      return res.json({ error: stderr || error.message });
     }
-  );
+
+    // Send the program output as response
+    res.json({ output: stdout });
+  });
 });
 
 app.listen(PORT, () => {
