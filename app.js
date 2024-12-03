@@ -10,6 +10,11 @@ const app = express();
 app.use(bodyParser.json());
 app.use(require("cors")());
 
+app.get("/run", (req, res) => {
+  const hey = "Hello mr. Dev";
+   res.json({ hey });
+});
+
 app.post("/run", (req, res) => {
   const code = req.body.code;
   // console.log('/run',code)
