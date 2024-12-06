@@ -17,7 +17,14 @@ app.get("/run", (req, res) => {
 
 app.post("/run", (req, res) => {
   const code = req.body.code;
+  const currentDate = new Date();
 
+const formattedDate = currentDate.toLocaleDateString(); // e.g., '12/6/2024'
+const formattedTime = currentDate.toLocaleTimeString(); // e.g., '10:48:52 AM'
+
+console.log("Formatted Date:", formattedDate);
+console.log("Formatted Time:", formattedTime);
+  console.log("new code come for run From",req.ip, formattedDate,"--",formattedTime)
   // Save the C code to a file
   const filePath = path.join(__dirname, "code.c");
   fs.writeFileSync(filePath, code);
@@ -30,6 +37,7 @@ app.post("/run", (req, res) => {
     }
 
     // Send the program output as response
+
     res.json({ output: stdout });
   });
 });
